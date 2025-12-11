@@ -28,7 +28,7 @@ The system learns a policy that adapts to query topic, complexity, and prior per
 
 ## 🏗️ System Architecture
 
-![Architecture](report/architecture_modern.png)
+![Architecture](architecture.png)
 
 ### 🔄 Pipeline Description
 
