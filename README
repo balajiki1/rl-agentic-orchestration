@@ -1,4 +1,4 @@
-# Reinforcement Learning–Enhanced Agentic Research Orchestration System
+# Reinforcement Learning–Enhanced Agentic Research Orchestration System  
 ### Final Project – Reinforcement Learning for Agentic AI Systems  
 **Author:** Kishore Balaji  
 **Date:** December 2025  
@@ -8,40 +8,91 @@
 ## 📌 Overview
 
 This project implements a **reinforcement learning–driven orchestration system** for research agents.  
-When a user submits a query, the system must choose between three possible workflows:
+When a user submits a query, the system chooses between three research workflows:
 
 - **Fast Summary** (low cost, low depth)  
 - **Deep Research** (high cost, high depth)  
 - **RAG Retrieval** (balanced cost and depth)
 
-The goal is to replace static heuristic decision rules with **learning-based agent orchestration** using:
+Traditional systems rely on static heuristics.  
+Here, I integrate **RL** to build a system that *learns optimal workflow selection through experience*, improving both answer quality and tool efficiency.
 
-1. **Q-Learning (value-based RL)**
-2. **UCB1 Bandit (exploration-based RL)**
+This project implements two RL algorithms:
 
-The system learns which workflow performs best for different types of queries.
+1. **Q-Learning (Value-Based RL)**  
+2. **UCB1 (Exploration-Based Bandit Algorithm)**  
+
+The system learns a policy that adapts to query topic, complexity, and prior performance.
 
 ---
 
 ## 🏗️ System Architecture
 
-![Architecture](architecture_modern.png)
+![Architecture](report/architecture_modern.png)
 
-Workflow:
+### 🔄 Pipeline Description
 
-1. User query → state encoder  
-2. State sent to RL controller (Q-Learning or UCB)  
-3. Controller selects workflow  
-4. Workflow agent returns answer + metadata  
-5. Reward computed  
-6. RL model updates policy  
-7. System improves with experience  
+1. **User Query** enters the system  
+2. **State Encoder** extracts:
+   - Topic category (Tech / Health / General)  
+   - Query length bucket  
+   - Prior success/failure  
+3. **RL Controller (Q-Learning or UCB)** selects the best workflow  
+4. **Workflow Agents** execute:
+   - Fast Summary  
+   - Deep Research  
+   - RAG Retrieval  
+5. Output quality + tool usage → **reward**  
+6. RL controller updates → system improves over time  
+
+---
+
+## 🧠 Reinforcement Learning Methods
+
+### **1️⃣ Q-Learning (Value-Based RL)**
+
+- 18 discrete states  
+- 3 actions (workflows)  
+- Epsilon-greedy exploration with decay  
+
+Update rule:
+
+\[
+Q(s,a) \leftarrow Q(s,a) + \alpha [r + \gamma \max_{a'} Q(s',a') - Q(s,a)]
+\]
+
+---
+
+### **2️⃣ UCB1 (Exploration Strategy)**
+
+Balances exploration & exploitation:
+
+\[
+a_t = \arg\max_a \left[\bar{X}_a + c\sqrt{\frac{\ln t}{n_a}} \right]
+\]
+
+Provides a strong, simple baseline for comparison.
+
+---
+
+## 🧪 Synthetic Training Environment
+
+A simulated environment models realistic agent workflows:
+
+- Each state has a hidden optimal workflow  
+- Quality scores sampled from a normal distribution  
+- Tool costs included  
+- Reward used for training:
+
+\[
+R = 1.0 \times \text{quality} - 0.2 \times \text{tools used}
+\]
 
 ---
 
 # ⚙️ Installation & Setup
 
-Clone the repository:
+Clone the project:
 
 ```bash
 git clone https://github.com/your-username/rl-agentic-orchestration.git
