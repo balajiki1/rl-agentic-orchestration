@@ -1,0 +1,95 @@
+# Reinforcement Learning–Enhanced Agentic Research Orchestration System
+### Final Project – Reinforcement Learning for Agentic AI Systems  
+**Author:** Kishore Balaji  
+**Date:** December 2025  
+
+---
+
+## 📌 Overview
+
+This project implements a **reinforcement learning–driven orchestration system** for research agents.  
+When a user submits a query, the system must choose between multiple research workflows:
+
+- **Fast Summary** (low cost, lower depth)  
+- **Deep Research** (high cost, high depth)  
+- **RAG Retrieval** (balanced cost and depth)
+
+Traditionally, systems use static heuristics.  
+Here, I integrate **RL** to enable the system to *learn optimal workflow selection through experience*, improving both answer quality and tool efficiency.
+
+This project implements two RL approaches:
+
+1. **Q-Learning (Value-Based RL)**  
+2. **UCB1 (Exploration-Based Bandit Algorithm)**
+
+The system learns a policy that adapts based on query topic, complexity, and prior performance.
+
+---
+
+## 🏗️ System Architecture
+
+![Architecture](architecture_modern.png)
+
+**Pipeline Description:**
+
+1. **User Query** enters the system.  
+2. **State Encoder** extracts:
+   - Topic category (Tech / Health / General)  
+   - Query length bucket  
+   - Previous success / failure  
+3. **RL Controller (Q-Learning or UCB)** selects a workflow.  
+4. **Workflow Agents** execute:
+   - Fast Summary  
+   - Deep Research  
+   - RAG Retrieval  
+5. Output quality + tool usage = **reward**  
+6. Reward updates the RL controller → system improves over time.
+
+---
+
+## 🧠 Reinforcement Learning Methods
+
+### **1️⃣ Q-Learning**
+- 18 discrete states  
+- 3 possible actions (workflows)  
+- Epsilon-greedy exploration with decay  
+- TD update rule:
+
+\[
+Q(s, a) \leftarrow Q(s, a) + \alpha[r + \gamma \max_{a'} Q(s',a') - Q(s,a)]
+\]
+
+### **2️⃣ UCB Bandit**
+- State-agnostic  
+- Strong exploration emphasis  
+- Baseline for comparison  
+
+\[
+a_t = \arg\max_a \left[ \bar{X}_a + c\sqrt{\frac{\ln t}{n_a}} \right]
+\]
+
+---
+
+## 🧪 Training Environment
+
+A **synthetic research environment** simulates realistic outcomes:
+
+- Each state has a *hidden best workflow*  
+- Rewards sampled from normal distribution  
+- Tool cost penalty included  
+
+Reward function:
+
+\[
+R = 1.0 \times \text{quality} - 0.2 \times \text{tools used}
+\]
+
+---
+
+## 🚀 Installation
+
+Clone the repo:
+
+```bash
+git clone https://github.com/rl-agentic/rl-agentic-orchestration.git
+cd rl-agentic-orchestration
